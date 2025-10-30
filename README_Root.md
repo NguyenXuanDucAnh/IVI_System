@@ -162,3 +162,20 @@ root@raspberrypi4-64:~#
 
 ```
 #### Thành công rồi. Tiến hành lấy ip và ssh vào thôi ^^
+
+---
+---
+
+# Lỗi Khi SSH
+### Mô tả lỗi:
+```
+$ ssh root@192.168.1.247 
+ssh root@192.168.1.247 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ @ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! @ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY! Someone could be eavesdropping on you right now (man-in-the-middle attack)! It is also possible that a host key has just been changed. The fingerprint for the ED25519 key sent by the remote host is SHA256:x5csAV+Pe6XLaqTySXs7zo+eAk9xQkU2HREojPEWL6E. Please contact your system administrator. Add correct host key in /home/admin1/.ssh/known_hosts to get rid of this message. Offending ECDSA key in /home/admin1/.ssh/known_hosts:3 remove with: ssh-keygen -f "/home/admin1/.ssh/known_hosts" -R "192.168.1.247" Host key for 192.168.1.247 has changed and you have requested strict checking. Host key verification failed.
+```
+### Nguyên nhân: có thể trước đó máy host đã SSH tới máy target và bây giờ đây host key đã bị thay đổi nên phải gen lại.
+### Chạy lệnh sau:
+```
+$ ssh-keygen -f "/home/admin1/.ssh/known_hosts" -R "192.168.1.247"
+
+```
++ Sau khi chạy xong, tiến hành SSH lại vào target!
