@@ -1,0 +1,156 @@
+Tôi sẽ giúp bạn thiết kế **sơ đồ kiến trúc dịch vụ** cho các thành phần **CAN**, **Bluetooth**, và **Media** trong hệ thống **IVI (In-Vehicle Infotainment)** của ô tô, triển khai trên **Automotive Grade Linux (AGL)** và phần cứng **Raspberry Pi** chạy **Raspberry Pi OS** (nhưng thực tế, AGL là một distro dựa trên Yocto/OpenEmbedded, có thể build và chạy trực tiếp trên Raspberry Pi như RPi4; nếu bạn dùng Raspberry Pi OS làm base, cần tích hợp AGL layers qua Yocto để có tính năng IVI đầy đủ). Thiết kế dựa trên kiến trúc AGL tiêu chuẩn, với hỗ trợ từ meta-raspberrypi layer cho hardware.
+
+Kiến trúc tập trung vào:
+- **Tách biệt layers**: Application/HMI → Services → Kernel/Drivers → Hardware.
+- **Integration**: Sử dụng D-Bus cho giao tiếp giữa services, PipeWire/GStreamer cho media, BlueZ cho Bluetooth, SocketCAN cho CAN.
+- **Hardware cụ thể**: Raspberry Pi 4 (khuyến nghị) với Bluetooth built-in; CAN cần add-on HAT như PiCAN (MCP2515-based); Media qua HDMI/audio jack hoặc USB audio.
+- **Build**: Sử dụng Yocto để build image AGL (e.g., agl-demo-platform với features agl-ivi, agl-appfw-smack), hỗ trợ Raspberry Pi qua meta-raspberrypi.
+
+## 🏗️ **KIẾN TRÚC TỔNG QUAN (AGL IVI trên Raspberry Pi)**
+
+```
+┌────────────────────┐    ┌────────────────────┐    ┌────────────────────┐    ┌────────────────────┐
+│   APPLICATION      │    │   AGL SERVICES     │    │   KERNEL/DRIVERS   │    │   HARDWARE         │
+│   LAYER (HMI)      │◄──►│   (Bindings/APIs)  │◄──►│   (Linux Modules)  │◄──►│   (Raspberry Pi)   │
+├────────────────────┤    ├────────────────────┤    ├────────────────────┤    ├────────────────────┤
+│ - Qt/QML or HTML5  │    │ - CAN Binding      │    │ - SocketCAN        │    │ - CAN HAT (PiCAN)  │
+│ - IVI Dashboard    │    │ - Bluetooth Daemon │    │ - BlueZ Stack      │    │ - Bluetooth Chip   │
+│ - Media Player App │    │ - Media Service    │    │ - PipeWire/GStream │    │ - Audio/HDMI Output│
+└────────────────────┘    └────────────────────┘    └────────────────────┘    └────────────────────┘
+                  D-Bus / APIs                  Kernel Interfaces            Physical Connections
+```
+
+- **AGL Core**: Dựa trên Linux kernel (e.g., 5.x+), systemd cho quản lý services, Wayland/Weston cho display, AGL App Framework (AppFW) với SMACK security cho apps.
+- **RPi Specifics**: Kernel config với vc4-fkms-v3d cho graphics, UART cho debug, firmware cho Bluetooth/WiFi.
+
+## 📊 **SƠ ĐỒ KIẾN TRÚC CHI TIẾT**
+
+```
+                          ┌──────────────────────┐
+                          │   AGL HMI (Qt/QML)   │
+                          │                      │
+                          │ ┌──────────────────┐ │
+                          │ │  IVI Dashboard   │ │  (Real-time CAN data display)
+                          │ └──────────────────┘ │
+                          │ ┌──────────────────┐ │
+                          │ │  Media Player    │ │  (Audio/Video control)
+                          │ └──────────────────┘ │
+                          │ ┌──────────────────┐ │
+                          │ │  Settings/Apps   │ │  (Bluetooth pairing)
+                          │ └──────────────────┘ │
+                          └──────────────────────┘
+                                       │
+                                       │ D-Bus / AGL Bindings
+                                       ▼
+                          ┌──────────────────────┐
+                          │   AGL SERVICE LAYER  │
+                          │ (Microservices/Systemd)│
+                          └──────────────────────┘
+                                       |
+                                ┌──────┬──────┐
+                                │      │      │
+                                ▼      ▼      ▼
+┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐
+│   CAN SERVICE      │ │  BLUETOOTH SERVICE │ │   MEDIA SERVICE    │
+│                    │ │                    │ │                    │
+│ - CAN Binding (AFB)│ │ - BlueZ Daemon     │ │ - PipeWire Daemon  │
+│ - Diagnostic (UDS) │ │ - A2DP/HFP Profiles│ │ - GStreamer Pipeline│
+│ - Data Parser (DBC)│ │ - Device Mgmt      │ │ - Audio Routing    │
+└────────────────────┘ └────────────────────┘ └────────────────────┘
+     │                           │                        │
+     │ SocketCAN                 │ BlueZ APIs             │ ALSA/PulseAudio
+     ▼                           ▼                        ▼
+┌────────────────┐     ┌────────────────┐     ┌────────────────┐
+│ KERNEL DRIVERS │     │ KERNEL DRIVERS │     │ KERNEL DRIVERS │
+│ - can-dev.ko   │     │ - bluetooth.ko │     │ - snd-bcm2835  │
+│ - mcp251x.ko   │     │ - hci_uart.ko  │     │ - vc4-drm.ko   │
+└────────────────┘     └────────────────┘     └────────────────┘
+     │                           │                        │
+     ▼                           ▼                        ▼
+    ┌────────────┐         ┌────────────┐         ┌────────────┐
+    │ CAN HAT    │         │ BT CHIP    │         │ AUDIO HW   │
+    │ (MCP2515)  │         │ (BCM4345)  │         │ (HDMI/Jack)│
+    └────────────┘         └────────────┘         └────────────┘
+```
+
+## 🔧 **THÀNH PHẦN CHI TIẾT**
+
+### **1. CAN Service (Tích hợp SocketCAN trên RPi)**
+- **Architecture**: Sử dụng SocketCAN kernel module (can-dev, mcp251x cho HAT). AGL cung cấp CAN binding qua Application Framework Binder (AFB) để apps truy cập dữ liệu CAN.
+- **Hardware**: Raspberry Pi không có CAN built-in → Sử dụng HAT như PiCAN2 (SPI interface, MCP2515 chip). Config trong config.txt: `dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25`.
+- **Services**: 
+  - Parse DBC files để decode signals.
+  - UDS (Unified Diagnostic Services) cho diagnostics.
+  - Tools: can-utils (candump, cansend).
+- **Integration**: D-Bus để gửi dữ liệu từ CAN đến HMI (e.g., vehicle speed, diagnostics).
+
+### **2. Bluetooth Service (BlueZ Stack)**
+- **Architecture**: BlueZ daemon (bluetoothd) quản lý connections. AGL hỗ trợ profiles như A2DP (audio streaming), HFP (hands-free), PBAP (phonebook).
+- **Hardware**: Built-in trên RPi3/4 (BCM4345 chip). Firmware từ brcmfmac.
+- **Services**:
+  - Device scanning/pairing via bluetoothctl hoặc AFB bindings.
+  - Audio integration với Media service qua PipeWire.
+- **Integration**: D-Bus cho HMI control (e.g., pair phone, stream music). Tích hợp với IVI cho calls/media.
+
+### **3. Media Service (PipeWire & GStreamer)**
+- **Architecture**: PipeWire daemon cho audio/video routing, GStreamer cho playback/processing. AGL dùng để handle multimedia trong IVI.
+- **Hardware**: Audio output qua HDMI, 3.5mm jack, hoặc USB DAC. Video qua HDMI.
+- **Services**:
+  - Media player (e.g., gst-play-1.0).
+  - Audio mixing, DSP (equalizer).
+  - Sources: Local files, Bluetooth stream, radio (nếu add hardware).
+- **Integration**: Tích hợp với Bluetooth cho A2DP, CAN cho vehicle-aware controls (e.g., mute on reverse).
+
+## 🔄 **LUỒNG DỮ LIỆU MẪU**
+
+### **Luồng 1: CAN Data → IVI Dashboard**
+1. CAN HAT → Kernel (SocketCAN) → CAN Service (parse DBC).
+2. CAN Service → D-Bus → HMI (update speed/fuel).
+
+### **Luồng 2: Bluetooth Audio → Media Playback**
+1. BT Device → BlueZ → A2DP stream.
+2. Bluetooth Service → PipeWire → GStreamer process → Audio HW.
+
+### **Luồng 3: Media Control via HMI**
+1. HMI App → D-Bus → Media Service (play/pause).
+2. Media Service → GStreamer → Output, sync với CAN (e.g., volume adjust based on speed).
+
+## 💻 **CÔNG NGHỆ STACK (AGL trên RPi)**
+
+| **Layer**          | **Technology**                  |
+|--------------------|---------------------------------|
+| **HMI**            | Qt/QML, HTML5, Weston/Wayland  |
+| **Services**       | AFB Bindings, Systemd, D-Bus   |
+| **Media**          | PipeWire, GStreamer, ALSA      |
+| **Bluetooth**      | BlueZ, bluetoothctl            |
+| **CAN**            | SocketCAN, can-utils, MCP251x  |
+| **Kernel**         | Linux 5.x+, vc4 graphics       |
+| **Build**          | Yocto (meta-agl, meta-raspberrypi) |
+| **Security**       | SMACK, Cynagora                |
+| **Updates**        | OSTree, SOTA (Aktualizr)       |
+
+- **Build Command Mẫu**: `repo init -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo; repo sync; source meta-agl/scripts/aglsetup.sh -m raspberrypi4 agl-demo agl-appfw-smack; bitbake agl-demo-platform`.
+
+## 🛠️ **TRIỂN KHAI & CONFIG**
+
+- **Flash Image**: Build .wic.xz → dd đến SD card.
+- **Config RPi**: /boot/config.txt cho overlays (CAN, graphics).
+- **Run Services**: Systemd units như bluetooth.service, pipewire.service.
+- **Test**: 
+  - CAN: `ip link set can0 up type can bitrate 500000`.
+  - Bluetooth: `bluetoothctl scan on`.
+  - Media: `gst-launch-1.0 audiotestsrc ! autoaudiosink`.
+
+## 📈 **MONITORING & OPTIMIZATION**
+
+- **Tools**: htop, journalctl cho logs.
+- **Performance**: RPi4 với 4GB+ RAM cho IVI mượt; dùng vc4 cho GPU acceleration.
+- **Challenges**: CAN latency thấp (real-time kernel nếu cần); Bluetooth stability với firmware update.
+
+Kiến trúc này đảm bảo **modular**, **secure**, và **scalable** cho IVI ô tô. Nếu bạn cần:
+1. File Draw.io cho sơ đồ?
+2. Code config Yocto chi tiết?
+3. Database schema (nếu dùng SQLite cho playlist)?
+4. Tích hợp thêm (e.g., GPS)?
+
+Hãy cho biết để hỗ trợ thêm! 🚗
