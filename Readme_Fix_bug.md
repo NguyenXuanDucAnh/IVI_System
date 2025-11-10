@@ -51,6 +51,11 @@ Giải thích: Do đang build cho Pi4 với aarch64 nhưng linux_arm_device_post
 ## * Bonus: lệnh configure mẫu (trong trường hợp chạy lần đầu thì chạy -device là linux-rasp-pi4-v3d-g++ vì rất có thể khi đó linux-rasp-pi4-agl64-g++ chưa được tạo. Nếu cần tạo thì xem phần lỗi 2 của mục II bên trên)
 ```
 ./configure -release -opengl es2 -eglfs -device linux-rasp-pi4-agl64-g++ -device-option CROSS_COMPILE=${CROSS_COMPILE} -sysroot ${SDKTARGETSYSROOT} -prefix $PWD/qtbase -opensource -confirm-license -nomake tests -nomake examples -skip qtwebengine -skip qtwayland -skip qtwebengine -v
+
+lệnh update:
+../qt-everywhere-src-5.15.2/configure     -release -opengl es2 -eglfs     -device linux-rasp-pi4-v3d-g++     -device-option CROSS_COMPILE=/opt/agl-sdk/17.1.12-aarch64/sysroots/x86_64-aglsdk-linux/usr/bin/aarch64-agl-linux/aarch64-agl-linux-     -sysroot $SDKTARGETSYSROOT     -prefix /usr/local/qt5.15     -extprefix ~/opt/agl-sdk/17.1.12-aarch64/qt5.15     -opensource -confirm-license     -skip qtscript -skip qtwayland -skip qtwebengine     -nomake tests -make libs     -pkg-config -no-use-gold-linker -v -recheck     -L${SDKTARGETSYSROOT}/usr/lib/aarch64-agl-linux     -I${SDKTARGETSYSROOT}/usr/include/aarch64-agl-linux     -qpa eglfs -no-feature-eglfs_brcm
+
+
 ```
 ---
 ---

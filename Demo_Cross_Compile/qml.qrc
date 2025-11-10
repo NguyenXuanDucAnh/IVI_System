@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>assert/Dash_board/Back_ground.png</file>
+        <file>Fonts/Unitext Regular.ttf</file>
+        
+        <file>assert/Dash_board/Kim_Chi_Toc_DODO.png</file>
+        
+    </qresource>
+</RCC>
