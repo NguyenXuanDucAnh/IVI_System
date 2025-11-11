@@ -7,7 +7,7 @@
 #include <QQmlContext>
 
 #include "UartDataProvider.h"
-
+#include "arccontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,9 +15,12 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    ArcController arcCtrl;
     // --- Tạo object để truyền dữ liệu UART ---
-    UartDataProvider uartProvider;
+    // UartDataProvider uartProvider;
+    Temperature_Info uartProvider;
     engine.rootContext()->setContextProperty("uartProvider", &uartProvider);
+    engine.rootContext()->setContextProperty("arcCtrl", &arcCtrl);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -43,7 +46,17 @@ int main(int argc, char *argv[])
 
         // --- Cập nhật dữ liệu cho QML ---
         uartProvider.setUartText(str);
-    });
+
+        // --- Cập nhật dữ liệu cho Kim chỉ tốc độ ---
+        QString main_speed_info_string = uartProvider.speed_info();
+        int  main_speed_info_int = main_speed_info_string.toInt();
+        int newAngle = (int)((main_speed_info_int*0.8125));
+
+        arcCtrl.setSpanAngle(newAngle);
+
+        qDebug() << "main_speed_info:" << newAngle;
+
+    });   
 
     return app.exec();
 }

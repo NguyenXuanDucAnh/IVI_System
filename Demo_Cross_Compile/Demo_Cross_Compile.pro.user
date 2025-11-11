@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 6.0.2, 2025-10-31T02:28:30. -->
+<!-- Written by QtCreator 6.0.2, 2025-11-11T22:59:33. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -269,9 +269,9 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Demo_Cross_Compile (on %{Device:Name})</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:/home/admin1/Desktop/QT/Demo_Cross_Compile/Demo_Cross_Compile.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/admin1/Desktop/QT/Demo_Cross_Compile/Demo_Cross_Compile.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Demo_Cross_Compile (on %{Device:Name})2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:/home/admin1/Desktop/IVI_System/Demo_Cross_Compile/Demo_Cross_Compile.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/admin1/Desktop/IVI_System/Demo_Cross_Compile/Demo_Cross_Compile.pro</value>
     <value type="int" key="RemoteLinux.EnvironmentAspect.Version">1</value>
     <value type="QString" key="RunConfiguration.Arguments">-platform eglfs</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
