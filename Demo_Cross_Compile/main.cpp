@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
         // --- Cập nhật dữ liệu cho Kim chỉ tốc độ ---
         QString main_speed_info_string = uartProvider.speed_info();
         int  main_speed_info_int = main_speed_info_string.toInt();
-        int newAngle = (int)((main_speed_info_int*0.8125));
+        int newAngle = (int)((main_speed_info_int*0.78125)); // 0.78125 = 260/320 với 260 là 260 độ đại diện cho tốc độ từ 0 -> 320 nên chia ra để biết khi tăng 1 Km/h thì kim phải quay thêm bao nhiêu độ
 
         arcCtrl.setSpanAngle(newAngle);
 

@@ -1,10 +1,18 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>spotify.qml</file>
+        <file>Dashboard.qml</file>
+
         <file>assert/Dash_board/Back_ground.png</file>
         <file>Fonts/Orbitron-VariableFont_wght.ttf</file>
-        
-        <file>assert/Dash_board/Kim_Chi_Toc_DODO.png</file>
-        
+        <file>assert/App bluetooth icon.png</file>
+        <file>assert/App seat-warmer icon.png</file>
+        <file>assert/App Home Icon.png</file>
+        <file>assert/App Setting Icon.png</file>
+        <file>assert/App Map Icon.png</file>
+        <file>assert/App spotify icon.png</file>
+        <file>assert/App phone icon.png</file>
+        <file>assert/App Radio Icon.png</file>
     </qresource>
 </RCC>
