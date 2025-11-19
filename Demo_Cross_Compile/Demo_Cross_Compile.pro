@@ -5,9 +5,14 @@ QT += quick
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        VehicleListener.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
+QT += dbus
+CONFIG += link_pkgconfig
+PKGCONFIG += Qt5DBus
+
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
@@ -21,4 +26,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     UartDataProvider.h \
+    VehicleListener.h \
     arccontroller.h
+
+DISTFILES += \
+    Googlemap.qml

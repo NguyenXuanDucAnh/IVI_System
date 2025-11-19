@@ -1,10 +1,15 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>spotify.qml</file>
+        <file>Music.qml</file>
         <file>Dashboard.qml</file>
+        <file>Googlemap.qml</file>
 
         <file>assert/Dash_board/Back_ground.png</file>
+        <file>assert/Google Map/Back_Ground_Music_Tab.png</file>
+
+        <file>assert/Google Map/Google Map Panel.png</file>
+
         <file>Fonts/Orbitron-VariableFont_wght.ttf</file>
         <file>assert/App bluetooth icon.png</file>
         <file>assert/App seat-warmer icon.png</file>

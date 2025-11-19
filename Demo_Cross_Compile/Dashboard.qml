@@ -239,6 +239,7 @@ Item {
             onClicked: {
                 console.log("Icon button clicked!")
                 // thực hiện hành động bạn muốn
+                stackView.push ('Googlemap.qml')
             }
         }
 
@@ -324,7 +325,7 @@ Item {
             onClicked: {
                 console.log("Icon spotify button clicked!")
                 // thực hiện hành động bạn muốn
-                stackView.push ("spotify.qml")
+                stackView.push ("Music.qml")
             }
         }
 

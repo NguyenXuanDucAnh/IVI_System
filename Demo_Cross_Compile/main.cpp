@@ -1,13 +1,15 @@
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
-#include <QLocalSocket>
-#include <QTimer>
-#include <QDebug>
 #include <QQmlContext>
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDebug>
 
 #include "UartDataProvider.h"
 #include "arccontroller.h"
+#include "VehicleListener.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,9 +18,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     ArcController arcCtrl;
-    // --- Tạo object để truyền dữ liệu UART ---
-    // UartDataProvider uartProvider;
     Temperature_Info uartProvider;
+
     engine.rootContext()->setContextProperty("uartProvider", &uartProvider);
     engine.rootContext()->setContextProperty("arcCtrl", &arcCtrl);
 
@@ -30,33 +31,23 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
-    // --- Kết nối socket UART ---
-    QLocalSocket socket;
-    socket.connectToServer("/tmp/uart_socket");
+    // -------------------------------------------------
+    // D-Bus listener
+    // -------------------------------------------------
+    VehicleListener listener;
+    listener.init();
 
-    if (!socket.waitForConnected(3000)) {
-        qWarning() << "Cannot connect to UART socket";
-        return -1;
-    }
+    QObject::connect(&listener, &VehicleListener::newData, [&](QString value){
+        uartProvider.setUartText(value);
 
-    QObject::connect(&socket, &QLocalSocket::readyRead, [&]() {
-        QByteArray data = socket.readAll();
-        QString str = QString::fromUtf8(data);
-        qDebug() << "UART data:" << str;
-
-        // --- Cập nhật dữ liệu cho QML ---
-        uartProvider.setUartText(str);
-
-        // --- Cập nhật dữ liệu cho Kim chỉ tốc độ ---
-        QString main_speed_info_string = uartProvider.speed_info();
-        int  main_speed_info_int = main_speed_info_string.toInt();
-        int newAngle = (int)((main_speed_info_int*0.78125)); // 0.78125 = 260/320 với 260 là 260 độ đại diện cho tốc độ từ 0 -> 320 nên chia ra để biết khi tăng 1 Km/h thì kim phải quay thêm bao nhiêu độ
-
-        arcCtrl.setSpanAngle(newAngle);
-
-        qDebug() << "main_speed_info:" << newAngle;
-
-    });   
+        QStringList parts = value.split("@");
+        if(parts.size() == 3) {
+            int speed = parts.at(1).toInt();
+            int newAngle = static_cast<int>(speed * 0.78125);
+            arcCtrl.setSpanAngle(newAngle);
+//            qDebug() << "Speed angle =" << newAngle;
+        }
+    });
 
     return app.exec();
 }

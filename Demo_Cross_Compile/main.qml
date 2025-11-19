@@ -338,6 +338,6 @@ ApplicationWindow {
     StackView {
         id: stackView
         anchors.fill: parent
-        initialItem: "Dashboard.qml"  // màn hình chính (dashboard)
+        initialItem: "Googlemap.qml"  // màn hình chính (dashboard)
     }
 }
