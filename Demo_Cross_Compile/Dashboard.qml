@@ -27,8 +27,8 @@ Item {
     Item {
         id: temperatureOilItem
         // toạ độ gốc trong ảnh thật
-        property real baseX: 735
-        property real baseY: 280
+        property real baseX: 220
+        property real baseY: 65
         property real baseWidth: 65      // bạn có thể chỉnh kích thước vùng hiển thị
         property real baseHeight: 20
 
@@ -56,9 +56,9 @@ Item {
     Item {
         id: rpmItem
         // toạ độ gốc trong ảnh thật
-        property real baseX: 225
-        property real baseY: 280
-        property real baseWidth: 65      // bạn có thể chỉnh kích thước vùng hiển thị
+        property real baseX: 15
+        property real baseY: 65
+        property real baseWidth: 57      // bạn có thể chỉnh kích thước vùng hiển thị
         property real baseHeight: 20
 
         // Tỉ lệ co giãn theo kích thước ảnh nền
@@ -68,7 +68,7 @@ Item {
         height: baseHeight * (background.height / background.sourceSize.height)
 
         // Để dễ debug, bạn có thể bật màu nền nhẹ
-        // Rectangle { anchors.fill: parent; color: "#40ffffff" }
+//         Rectangle { anchors.fill: parent; color: "#40ffffff" }
 
         Text {
             id: label_rpm
@@ -82,67 +82,11 @@ Item {
         }
     }
 
-    // vẽ kim chỉ tốc độ
-    Canvas {
-        id: arcCanvas
-
-        // --- Tọa độ gốc trong ảnh thật ---
-        property real baseX: 509
-        property real baseY: 263
-        property real baseWidth: 300      // kích thước gốc
-        property real baseHeight: 300
-
-        // Co giãn theo background
-        x: baseX * (background.width / background.sourceSize.width) - (baseWidth * (background.width / background.sourceSize.width))/2
-        y: baseY * (background.height / background.sourceSize.height) - (baseHeight * (background.height / background.sourceSize.height))/2
-        width: baseWidth * (background.width / background.sourceSize.width)
-        height: baseHeight * (background.height / background.sourceSize.height)
-
-        property real startAngle: 145
-//        property real spanAngle: 0
-        property real lineWidth: 90
-        property color arcColor: "darkgrey"
-        property real maxSpanAngle: 260 // góc từ 0km/h đến 320km/h
-
-        // Lấy spanAngle từ C++:
-         property real spanAngle: arcCtrl.spanAngle
-
-        onPaint: {
-            // -- Vẽ cung tròn
-            var ctx = getContext("2d")
-            ctx.reset()
-            ctx.clearRect(0, 0, width, height)
-
-            ctx.save()
-            ctx.translate(width/2, height/2)        // đặt tâm canvas
-            ctx.beginPath()
-            var radius = Math.min(width, height)/2 - lineWidth
-            ctx.arc(0, 0, radius, startAngle * Math.PI/180, (startAngle + spanAngle) * Math.PI/180)
-            ctx.lineWidth = lineWidth
-            ctx.strokeStyle = arcColor
-            ctx.stroke()
-
-            // --- Vẽ tâm cung (debug) ---
-            ctx.beginPath()
-            ctx.arc(0, 0, 5, 0, 2*Math.PI)   // chấm tròn bán kính 5
-            ctx.fillStyle = "blue"
-            ctx.fill()
-
-            ctx.restore()
-        }
-
-        // Khi spanAngle thay đổi từ C++ → request paint lại
-        Connections {
-            target: arcCtrl
-            onSpanAngleChanged: arcCanvas.requestPaint()
-        }
-    }
-
     Item {
         id: speedItem
         // toạ độ gốc trong ảnh thật
-        property real baseX: 463
-        property real baseY: 220
+        property real baseX: 102
+        property real baseY: 40
         property real baseWidth: 100      // bạn có thể chỉnh kích thước vùng hiển thị
         property real baseHeight: 60
 
@@ -153,7 +97,7 @@ Item {
         height: baseHeight * (background.height / background.sourceSize.height)
 
         // Để dễ debug, bạn có thể bật màu nền nhẹ
-//         Re   ctangle { anchors.fill: parent; color: "#40ffffff" }
+//         Rectangle { anchors.fill: parent; color: "#40ffffff" }
 
         Text {
             id: label_speed
