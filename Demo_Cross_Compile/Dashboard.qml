@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
 
 Item {
     visible: true
@@ -18,7 +19,12 @@ Item {
     // Load font từ file, không có cái này thì không hiện text lên được
     FontLoader {
         id: unitext_regular_font
-        source: "Fonts/Orbitron-VariableFont_wght.ttf"   // đường dẫn tới font
+        source: "Fonts/Orbitron-VariableFont_wght.ttf"   // đường dẫn tới font Orbitron
+    }
+
+    FontLoader {
+        id:lato_regular_font
+        source: "Fonts/Lato-Regular.ttf"   // đường dẫn tới font Lato
     }
 
     // Text sử dụng font vừa load
@@ -457,5 +463,266 @@ Item {
             radius: width / 2
         }
     }
+
+    // hiển thị bài hát hiện tại
+    Item {
+        id: nameCurrentSongPannel
+        property real baseX: 365
+        property real baseY: 397
+        property real baseWidth: 427
+        property real baseHeight: 26
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        Text {
+            id: curent_song
+            anchors.centerIn: parent        // ✅ canh giữa trong Item
+            font.family: lato_regular_font.name
+            font.pixelSize: 16 * (background.width / background.sourceSize.width)
+            color: "white"
+            text: mp3Ctrl.currentSong // lấy tên bài hát hiện tại
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
+
+    // thêm nút play/pause music
+    Item {
+        id: playMusic
+        property alias iconSource: iconPlayMusic.source   // cho phép set icon từ ngoài
+        property real baseX: 565
+        property real baseY: 442
+        property real baseWidth: 23
+        property real baseHeight: 31
+        property bool active: false   // trạng thái icon
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: iconPlayMusic
+            anchors.centerIn: parent
+            source: playMusic.active?
+                      "assert/Music_Tab/Play Music.png":
+                      "assert/Music_Tab/Pause Music.png"
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                mp3Ctrl.playPause()
+                playMusic.active = !playMusic.active
+            }
+        }
+
+        // Optional: nền nhấn phản hồi (effect khi hover)
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: mouseArea.containsMouse ? "white" : "transparent"
+            radius: width / 2
+        }
+    }
+
+    // thêm nút next music
+    Item {
+        id: nextMusic
+        property alias iconSource: iconNextMusic.source   // cho phép set icon từ ngoài
+        property real baseX: 631
+        property real baseY: 441
+        property real baseWidth: 23
+        property real baseHeight: 31
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: iconNextMusic
+            anchors.centerIn: parent
+            source: "assert/Music_Tab/Next Music.png"  // thay bằng đường dẫn icon của bạn
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                mp3Ctrl.next()
+            }
+        }
+
+        // Optional: nền nhấn phản hồi (effect khi hover)
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: mouseArea.containsMouse ? "white" : "transparent"
+            radius: width / 2
+        }
+    }
+
+
+    // thêm nút previous music
+    Item {
+        id: previousMusic
+        property alias iconSource: iconPreviousMusic.source   // cho phép set icon từ ngoài
+        property real baseX: 486
+        property real baseY: 441
+        property real baseWidth: 23
+        property real baseHeight: 31
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: iconPreviousMusic
+            anchors.centerIn: parent
+            source: "assert/Music_Tab/Last Music.png"  // thay bằng đường dẫn icon của bạn
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                mp3Ctrl.previous()
+            }
+        }
+
+        // Optional: nền nhấn phản hồi (effect khi hover)
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: mouseArea.containsMouse ? "white" : "transparent"
+            radius: width / 2
+        }
+    }
+
+    // thêm phần điều chỉnh volume âm nhạc
+    Slider {
+        id: volumeSlider
+        property real baseX: 863
+        property real baseY: 63
+        property real baseWidth: 140
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+
+        from: 0; to: 10; value: 10.0
+        onValueChanged: mp3Ctrl.setVolume(value)
+    }
+
+    // thêm Icon/nút tăng âm lượng
+    Item {
+        id: increaseVolume
+        property alias iconSource: iconIncreaseVolume.source   // cho phép set icon từ ngoài
+        property real baseX: 1000
+        property real baseY: 63
+        property real baseWidth: 24
+        property real baseHeight: 19
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: iconIncreaseVolume
+            anchors.centerIn: parent
+            source: "assert/Music_Tab/Increase volume.png"  // thay bằng đường dẫn icon của bạn
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                volumeSlider.value = volumeSlider.value + 1
+            }
+        }
+
+        // Optional: nền nhấn phản hồi (effect khi hover)
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: mouseArea.containsMouse ? "white" : "transparent"
+            radius: width / 2
+        }
+    }
+    // thêm Icon/nút giảm lượng
+    Item {
+        id: decreaseVolume
+        property alias iconSource: iconDecreaseVolume.source   // cho phép set icon từ ngoài
+        property real baseX: 840
+        property real baseY: 63
+        property real baseWidth: 24
+        property real baseHeight: 19
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: iconDecreaseVolume
+            anchors.centerIn: parent
+            source: "assert/Music_Tab/Decrease volume.png"  // thay bằng đường dẫn icon của bạn
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                volumeSlider.value = volumeSlider.value - 1
+            }
+        }
+
+        // Optional: nền nhấn phản hồi (effect khi hover)
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: mouseArea.containsMouse ? "white" : "transparent"
+            radius: width / 2
+        }
+    }
+
+
 
 }

@@ -108,11 +108,6 @@ connmanctl> services
     Duc-Anh              wifi_2ccf6735a271_4475632d416e68_managed_psk
                          wifi_2ccf6735a271_hidden_managed_psk
     Kien                 wifi_2ccf6735a271_4b69656e_managed_psk
-connmanctl>       wifi_2ccf6735a271_4b69656e_managed_psk
-connmanctl>
-Error 'wifi_2ccf6735a271_4b69656e_managed_psk
-connmanctl>
-': Unknown command
 connmanctl> agent on
 Agent registered
 connmanctl> connect wifi_2ccf6735a271_4475632d416e68_managed_psk

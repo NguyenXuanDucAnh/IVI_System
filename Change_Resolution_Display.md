@@ -1,3 +1,9 @@
+
+# CMD kiểm tra xem độ phân giải đang xuất là gì:
+```
+$ modetest -c
+```
+
 Để **thay đổi độ phân giải Raspberry Pi chạy AGL sang 1024×600** (màn hình khác cũng làm tương tự chỉ thay số), bạn cần xem AGL đang xuất hình bằng gì:
 
 * DRM/KMS (thường gặp nhất trên AGL)

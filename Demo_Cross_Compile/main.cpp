@@ -10,6 +10,7 @@
 #include "UartDataProvider.h"
 #include "arccontroller.h"
 #include "VehicleListener.h"
+#include "Mp3Controller.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,9 +18,12 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    // khai báo các object
     ArcController arcCtrl;
     Temperature_Info uartProvider;
+    Mp3Controller mp3Ctrl;
 
+    engine.rootContext()->setContextProperty("mp3Ctrl", &mp3Ctrl);
     engine.rootContext()->setContextProperty("uartProvider", &uartProvider);
     engine.rootContext()->setContextProperty("arcCtrl", &arcCtrl);
 
@@ -32,7 +36,7 @@ int main(int argc, char *argv[])
     engine.load(url);
 
     // -------------------------------------------------
-    // D-Bus listener
+    // D-Bus listener: lắng nghe dữ liệu từ cổng USB sau đó đưa dữ liệu nhận được cho QML để hiển thị tới người dùng
     // -------------------------------------------------
     VehicleListener listener;
     listener.init();
@@ -40,12 +44,11 @@ int main(int argc, char *argv[])
     QObject::connect(&listener, &VehicleListener::newData, [&](QString value){
         uartProvider.setUartText(value);
 
-        QStringList parts = value.split("@");
+        QStringList parts = value.split("@"); // cắt dữ liệu. vì dữ liệu có dạng speed@rpm@celcius@
         if(parts.size() == 3) {
             int speed = parts.at(1).toInt();
             int newAngle = static_cast<int>(speed * 0.78125);
             arcCtrl.setSpanAngle(newAngle);
-//            qDebug() << "Speed angle =" << newAngle;
         }
     });
 

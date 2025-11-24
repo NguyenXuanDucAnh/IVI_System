@@ -11,6 +11,8 @@
         <file>assert/Google Map/Google Map Panel.png</file>
 
         <file>Fonts/Orbitron-VariableFont_wght.ttf</file>
+        <file>Fonts/Lato-Regular.ttf</file>
+
         <file>assert/App bluetooth icon.png</file>
         <file>assert/App seat-warmer icon.png</file>
         <file>assert/App Home Icon.png</file>
@@ -19,5 +21,13 @@
         <file>assert/App spotify icon.png</file>
         <file>assert/App phone icon.png</file>
         <file>assert/App Radio Icon.png</file>
+
+        <file>assert/Music_Tab/Last Music.png</file>
+        <file>assert/Music_Tab/Next Music.png</file>
+        <file>assert/Music_Tab/Play Music.png</file>
+        <file>assert/Music_Tab/Pause Music.png</file>
+        <file>assert/Music_Tab/Increase volume.png</file>
+        <file>assert/Music_Tab/Decrease volume.png</file>
+
     </qresource>
 </RCC>
