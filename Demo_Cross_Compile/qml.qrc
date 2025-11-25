@@ -4,15 +4,11 @@
         <file>Music.qml</file>
         <file>Dashboard.qml</file>
         <file>Googlemap.qml</file>
-
         <file>assert/Dash_board/Back_ground.png</file>
         <file>assert/Google Map/Back_Ground_Music_Tab.png</file>
-
         <file>assert/Google Map/Google Map Panel.png</file>
-
         <file>Fonts/Orbitron-VariableFont_wght.ttf</file>
         <file>Fonts/Lato-Regular.ttf</file>
-
         <file>assert/App bluetooth icon.png</file>
         <file>assert/App seat-warmer icon.png</file>
         <file>assert/App Home Icon.png</file>
@@ -21,13 +17,16 @@
         <file>assert/App spotify icon.png</file>
         <file>assert/App phone icon.png</file>
         <file>assert/App Radio Icon.png</file>
-
         <file>assert/Music_Tab/Last Music.png</file>
         <file>assert/Music_Tab/Next Music.png</file>
         <file>assert/Music_Tab/Play Music.png</file>
         <file>assert/Music_Tab/Pause Music.png</file>
         <file>assert/Music_Tab/Increase volume.png</file>
         <file>assert/Music_Tab/Decrease volume.png</file>
-
+        <file>assert/Dash_board/Headlight.png</file>
+        <file>assert/Dash_board/Seatbelt.png</file>
+        <file>assert/Dash_board/Shift Left Icon.png</file>
+        <file>assert/Dash_board/Shift Right Icon.png</file>
+        <file>assert/Dash_board/Map Demo.png</file>
     </qresource>
 </RCC>

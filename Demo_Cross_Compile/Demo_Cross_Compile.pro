@@ -28,8 +28,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Mp3Controller.h \
     UartDataProvider.h \
-    VehicleListener.h \
-    arccontroller.h
+    VehicleListener.h
 
 DISTFILES += \
     Googlemap.qml

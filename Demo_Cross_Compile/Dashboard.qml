@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 
+
 Item {
     visible: true
     width: 1024
@@ -33,8 +34,8 @@ Item {
     Item {
         id: temperatureOilItem
         // toạ độ gốc trong ảnh thật
-        property real baseX: 220
-        property real baseY: 65
+        property real baseX: 240
+        property real baseY: 60
         property real baseWidth: 65      // bạn có thể chỉnh kích thước vùng hiển thị
         property real baseHeight: 20
 
@@ -62,8 +63,8 @@ Item {
     Item {
         id: rpmItem
         // toạ độ gốc trong ảnh thật
-        property real baseX: 15
-        property real baseY: 65
+        property real baseX: 46
+        property real baseY: 60
         property real baseWidth: 57      // bạn có thể chỉnh kích thước vùng hiển thị
         property real baseHeight: 20
 
@@ -91,8 +92,8 @@ Item {
     Item {
         id: speedItem
         // toạ độ gốc trong ảnh thật
-        property real baseX: 102
-        property real baseY: 40
+        property real baseX: 124
+        property real baseY: 35
         property real baseWidth: 100      // bạn có thể chỉnh kích thước vùng hiển thị
         property real baseHeight: 60
 
@@ -626,13 +627,15 @@ Item {
     // thêm phần điều chỉnh volume âm nhạc
     Slider {
         id: volumeSlider
-        property real baseX: 863
-        property real baseY: 63
+        property real baseX: 840
+        property real baseY: 52
         property real baseWidth: 140
+        property real baseHeight: 20
 
         x: baseX * (background.width / background.sourceSize.width)
         y: baseY * (background.height / background.sourceSize.height)
         width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
 
         from: 0; to: 10; value: 10.0
         onValueChanged: mp3Ctrl.setVolume(value)
@@ -642,10 +645,10 @@ Item {
     Item {
         id: increaseVolume
         property alias iconSource: iconIncreaseVolume.source   // cho phép set icon từ ngoài
-        property real baseX: 1000
-        property real baseY: 63
+        property real baseX: 980
+        property real baseY: 50
         property real baseWidth: 24
-        property real baseHeight: 19
+        property real baseHeight: 24
 
         x: baseX * (background.width / background.sourceSize.width)
         y: baseY * (background.height / background.sourceSize.height)
@@ -684,10 +687,10 @@ Item {
     Item {
         id: decreaseVolume
         property alias iconSource: iconDecreaseVolume.source   // cho phép set icon từ ngoài
-        property real baseX: 840
-        property real baseY: 63
-        property real baseWidth: 24
-        property real baseHeight: 19
+        property real baseX: 813
+        property real baseY: 50
+        property real baseWidth: 30
+        property real baseHeight: 30
 
         x: baseX * (background.width / background.sourceSize.width)
         y: baseY * (background.height / background.sourceSize.height)
@@ -723,6 +726,236 @@ Item {
         }
     }
 
+    // Thêm icon rẽ xinhan trái
+    Item {
+        id: turnleftArrow
+        property alias iconSource: iconturnleftArrow.source   // cho phép set icon từ ngoài
+        property real baseX: 43
+        property real baseY: 6
+        property real baseWidth: 39
+        property real baseHeight: 47
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Cập nhật trạng thái xinhan liên tục
+        Timer {
+            id: xinhanleftPoll
+            interval: 1000      // 1000ms quét một lần (tùy chỉnh)
+            running: true
+            repeat: true
+            onTriggered: {
+                var sig = uartProvider.xinhan_info     // lấy dữ liệu xinhan
+
+                if (sig === 0x00) {
+                    iconturnleftArrow.visible = false
+                    blinkleftTimer.running = false
+                    iconturnleftArrow.opacity = 1.0
+                }
+                else if (sig === 0x01 || sig === 0x03) {
+                    iconturnleftArrow.visible = true
+                    blinkleftTimer.running = true
+                }
+            }
+        }
+
+        // Timer để nhấp nháy icon 1s
+        Timer {
+            id: blinkleftTimer
+            interval: 200    // 500ms → on/off → chu kỳ 1s
+            repeat: true
+            running: false
+            onTriggered: {
+                iconturnleftArrow.opacity = iconturnleftArrow.opacity > 0 ? 0 : 1
+            }
+        }
+
+        // Icon
+        Image {
+            id: iconturnleftArrow
+            anchors.centerIn: parent
+            source: "/assert/Dash_board/Shift Left Icon.png"
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+            visible: false   // mặc định tắt
+        }
+    }
+    // Thêm icon rẽ xinhan phải
+    Item {
+        id: turnrightArrow
+        property alias iconSource: iconturnrightArrow.source
+        property real baseX: 233
+        property real baseY: 6
+        property real baseWidth: 39
+        property real baseHeight: 47
+
+        // vị trí & kích thước theo background
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Cập nhật trạng thái xinhan liên tục
+        Timer {
+            id: xinhanrightPoll
+            interval: 1000      // 1s quét một lần (tùy chỉnh)
+            running: true
+            repeat: true
+            onTriggered: {
+                var sig = uartProvider.xinhan_info     // lấy dữ liệu xinhan
+
+                if (sig === 0x00) {
+                    iconturnrightArrow.visible = false
+                    blinkrightTimer.running = false
+                    iconturnrightArrow.opacity = 1.0
+                }
+                else if (sig === 0x02 || sig === 0x03) { // 0x03 => nháy đèn hazard
+                    iconturnrightArrow.visible = true
+                    blinkrightTimer.running = true
+                }
+            }
+        }
+
+        // Timer để nhấp nháy icon 1s
+        Timer {
+            id: blinkrightTimer
+            interval: 200    // 500ms → on/off → chu kỳ 1s
+            repeat: true
+            running: false
+            onTriggered: {
+                iconturnrightArrow.opacity = iconturnrightArrow.opacity > 0 ? 0 : 1
+            }
+        }
+
+        // Icon
+        Image {
+            id: iconturnrightArrow
+            anchors.centerIn: parent
+            source: "/assert/Dash_board/Shift Right Icon.png"
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+            visible: false   // mặc định tắt
+        }
+    }
+
+    // Thêm icon cảnh báo đeo dây an toàn
+    Item {
+        id: seatbeltWarning
+        property alias iconSource: iconseatbeltWarning.source   // cho phép set icon từ ngoài
+        property real baseX: 167
+        property real baseY: 1
+        property real baseWidth: 50
+        property real baseHeight: 50
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Cập nhật trạng thái xinhan liên tục
+        Timer {
+            id: seatbeltWarningPoll
+            interval: 500      // 1s quét một lần (tùy chỉnh)
+            running: true
+            repeat: true
+            onTriggered: {
+                var sig = uartProvider.seatbelt_warning     // lấy dữ liệu seatbelt
+
+                if (sig === 0x00) {
+                    iconseatbeltWarning.visible = false
+                    seatbeltWarningTimer.running = false
+                    iconseatbeltWarning.opacity = 1.0
+                }
+                else if (sig === 0x01) { // 0x03 => seatbelt chưa được đóng
+                    iconseatbeltWarning.visible = true
+                    seatbeltWarningTimer.running = true
+                }
+            }
+        }
+
+        // Timer để nhấp nháy icon 100ms
+        Timer {
+            id: seatbeltWarningTimer
+            interval: 100    // 500ms → on/off → chu kỳ 100ms
+            repeat: true
+            running: false
+            onTriggered: {
+                iconseatbeltWarning.opacity = iconseatbeltWarning.opacity > 0 ? 0 : 1
+            }
+        }
+
+        // Icon
+        Image {
+            id: iconseatbeltWarning
+            anchors.centerIn: parent
+            source: "/assert/Dash_board/Seatbelt.png"
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+            visible: false   // mặc định tắt
+        }
+
+        // màu nền cho dễ debug
+//        Rectangle { anchors.fill: parent; color: "#40ffffff" }
+    }
+
+    // Thêm icon đèn pha xe
+    Item {
+        id: headLight
+        property alias iconSource: iconheadLight.source   // cho phép set icon từ ngoài
+        property real baseX: 101
+        property real baseY: 6
+        property real baseWidth: 55
+        property real baseHeight: 54
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: iconheadLight
+            anchors.centerIn: parent
+            source: "/assert/Dash_board/Headlight.png"  // thay bằng đường dẫn icon của bạn
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+            visible: false
+        }
+    }
+
+    // thêm minimap demo (sẽ phát triển dữ liệu thật sau)
+    Item {
+        id: miniMap
+        property alias iconSource: iconminiMap.source   // cho phép set icon từ ngoài
+        property real baseX: 365
+        property real baseY: 71
+        property real baseWidth: 428
+        property real baseHeight: 200
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: iconminiMap
+            anchors.centerIn: parent
+            source: "/assert/Dash_board/Map Demo.png"  // thay bằng đường dẫn icon của bạn
+            fillMode: Image.PreserveAspectFit
+            width: parent.width
+            height: parent.height
+        }
+
+        // Để dễ debug, bạn có thể bật màu nền nhẹ
+//        Rectangle { anchors.fill: parent; color: "#40ffffff" }
+    }
 
 
 }

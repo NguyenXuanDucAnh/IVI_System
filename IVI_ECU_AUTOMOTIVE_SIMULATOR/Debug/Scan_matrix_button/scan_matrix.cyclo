@@ -1,0 +1,6 @@
+../Scan_matrix_button/scan_matrix.c:33:6:Set_Default_Status	1
+../Scan_matrix_button/scan_matrix.c:43:6:Scan_Button_Is_Pressed	6
+../Scan_matrix_button/scan_matrix.c:79:6:Scan_Row_1	9
+../Scan_matrix_button/scan_matrix.c:121:6:Scan_Row_2	9
+../Scan_matrix_button/scan_matrix.c:163:6:Scan_Row_3	9
+../Scan_matrix_button/scan_matrix.c:205:6:Scan_Row_4	9

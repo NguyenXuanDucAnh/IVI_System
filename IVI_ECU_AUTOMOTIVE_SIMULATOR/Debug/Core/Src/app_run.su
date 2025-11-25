@@ -1,0 +1,6 @@
+../Core/Src/app_run.c:66:6:Create_Buf_RPM_SPEED_TEMP	24	static
+../Core/Src/app_run.c:174:6:Xinhan_Task	16	static
+../Core/Src/app_run.c:198:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/app_run.c:247:6:HAL_ADC_ConvCpltCallback	24	static
+../Core/Src/app_run.c:277:6:setup	8	static
+../Core/Src/app_run.c:286:6:loop	24	static
