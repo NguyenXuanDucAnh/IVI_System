@@ -131,7 +131,7 @@ class Temperature_Info : public UartDataProvider
                 }
            }
            xinhan_value = xinhan_info_text.toInt(&is_convert_ok);
-           qDebug() << "The value of xinhan_value is:" << xinhan_value;
+//           qDebug() << "The value of xinhan_value is:" << xinhan_value;
            return xinhan_value;
        }
 

@@ -14,7 +14,7 @@ Item {
         id: background
         source: "assert/Dash_board/Back_ground.png"
         anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop  // hoặc .Stretch nếu muốn kéo giãn đầy đủ
+        fillMode: Image.Stretch  // hoặc .Stretch nếu muốn kéo giãn đầy đủ
     }
 
     // Load font từ file, không có cái này thì không hiện text lên được
@@ -93,7 +93,7 @@ Item {
         id: speedItem
         // toạ độ gốc trong ảnh thật
         property real baseX: 124
-        property real baseY: 35
+        property real baseY: 47
         property real baseWidth: 100      // bạn có thể chỉnh kích thước vùng hiển thị
         property real baseHeight: 60
 
@@ -110,7 +110,7 @@ Item {
             id: label_speed
             anchors.centerIn: parent        // ✅ canh giữa trong Item
             font.family: unitext_regular_font.name
-            font.pixelSize: 55 * (background.width / background.sourceSize.width)
+            font.pixelSize: 48 * (background.width / background.sourceSize.width)
             color: "white"
             text: uartProvider.speed_info
             horizontalAlignment: Text.AlignHCenter
@@ -151,13 +151,6 @@ Item {
             }
         }
 
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
     // -- thêm icon Mapp app
     Item {
@@ -193,14 +186,6 @@ Item {
                 stackView.push ('Googlemap.qml')
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
     // -- thêm icon bluetooth app
     Item {
@@ -234,14 +219,6 @@ Item {
                 console.log("Icon button clicked!")
                 // thực hiện hành động bạn muốn
             }
-        }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
         }
     }
 
@@ -279,14 +256,6 @@ Item {
                 stackView.push ("Music.qml")
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
 
     // -- thêm icon radio app
@@ -322,14 +291,6 @@ Item {
                 // thực hiện hành động bạn muốn
                 stackView.push ("radio.qml")
             }
-        }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
         }
     }
 
@@ -367,14 +328,6 @@ Item {
                 stackView.push ("phone.qml")
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
 
     // -- thêm icon A/C app
@@ -411,14 +364,6 @@ Item {
                 stackView.push ("spotify.qml")
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
 
     // -- thêm icon Setting app
@@ -454,14 +399,6 @@ Item {
                 // thực hiện hành động bạn muốn
                 stackView.push ("spotify.qml")
             }
-        }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
         }
     }
 
@@ -527,14 +464,6 @@ Item {
                 playMusic.active = !playMusic.active
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
 
     // thêm nút next music
@@ -569,14 +498,6 @@ Item {
                 // thực hiện hành động bạn muốn
                 mp3Ctrl.next()
             }
-        }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
         }
     }
 
@@ -614,14 +535,6 @@ Item {
                 mp3Ctrl.previous()
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
 
     // thêm phần điều chỉnh volume âm nhạc
@@ -637,8 +550,11 @@ Item {
         width: baseWidth * (background.width / background.sourceSize.width)
         height: baseHeight * (background.height / background.sourceSize.height)
 
-        from: 0; to: 10; value: 10.0
+        from: 0
+        value: 10.0
+        to: 10
         onValueChanged: mp3Ctrl.setVolume(value)
+
     }
 
     // thêm Icon/nút tăng âm lượng
@@ -647,8 +563,8 @@ Item {
         property alias iconSource: iconIncreaseVolume.source   // cho phép set icon từ ngoài
         property real baseX: 980
         property real baseY: 50
-        property real baseWidth: 24
-        property real baseHeight: 24
+        property real baseWidth: 30
+        property real baseHeight: 30
 
         x: baseX * (background.width / background.sourceSize.width)
         y: baseY * (background.height / background.sourceSize.height)
@@ -674,16 +590,8 @@ Item {
                 volumeSlider.value = volumeSlider.value + 1
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
-    // thêm Icon/nút giảm lượng
+    // thêm Icon/nút giảm âm lượng
     Item {
         id: decreaseVolume
         property alias iconSource: iconDecreaseVolume.source   // cho phép set icon từ ngoài
@@ -716,14 +624,6 @@ Item {
                 volumeSlider.value = volumeSlider.value - 1
             }
         }
-
-        // Optional: nền nhấn phản hồi (effect khi hover)
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            border.color: mouseArea.containsMouse ? "white" : "transparent"
-            radius: width / 2
-        }
     }
 
     // Thêm icon rẽ xinhan trái
@@ -750,12 +650,12 @@ Item {
                 var sig = uartProvider.xinhan_info     // lấy dữ liệu xinhan
 
                 if (sig === 0x00) {
-                    iconturnleftArrow.visible = false
+//                    iconturnleftArrow.visible = false
                     blinkleftTimer.running = false
-                    iconturnleftArrow.opacity = 1.0
+                    iconturnleftArrow.opacity = 0.3
                 }
                 else if (sig === 0x01 || sig === 0x03) {
-                    iconturnleftArrow.visible = true
+//                    iconturnleftArrow.visible = true
                     blinkleftTimer.running = true
                 }
             }
@@ -768,7 +668,7 @@ Item {
             repeat: true
             running: false
             onTriggered: {
-                iconturnleftArrow.opacity = iconturnleftArrow.opacity > 0 ? 0 : 1
+                iconturnleftArrow.opacity = (iconturnleftArrow.opacity < 1) ? 1 : 0.3
             }
         }
 
@@ -780,7 +680,8 @@ Item {
             fillMode: Image.PreserveAspectFit
             width: parent.width * 0.8
             height: parent.height * 0.8
-            visible: false   // mặc định tắt
+//            visible: false   // mặc định tắt
+            opacity: 0.3
         }
     }
     // Thêm icon rẽ xinhan phải
@@ -808,12 +709,10 @@ Item {
                 var sig = uartProvider.xinhan_info     // lấy dữ liệu xinhan
 
                 if (sig === 0x00) {
-                    iconturnrightArrow.visible = false
                     blinkrightTimer.running = false
-                    iconturnrightArrow.opacity = 1.0
+                    iconturnrightArrow.opacity = 0.3
                 }
                 else if (sig === 0x02 || sig === 0x03) { // 0x03 => nháy đèn hazard
-                    iconturnrightArrow.visible = true
                     blinkrightTimer.running = true
                 }
             }
@@ -826,7 +725,8 @@ Item {
             repeat: true
             running: false
             onTriggered: {
-                iconturnrightArrow.opacity = iconturnrightArrow.opacity > 0 ? 0 : 1
+
+                iconturnrightArrow.opacity = (iconturnrightArrow.opacity < 1) ? 1 : 0.3
             }
         }
 
@@ -838,7 +738,8 @@ Item {
             fillMode: Image.PreserveAspectFit
             width: parent.width * 0.8
             height: parent.height * 0.8
-            visible: false   // mặc định tắt
+//            visible: false   // mặc định tắt
+            opacity: 0.3
         }
     }
 
@@ -866,12 +767,12 @@ Item {
                 var sig = uartProvider.seatbelt_warning     // lấy dữ liệu seatbelt
 
                 if (sig === 0x00) {
-                    iconseatbeltWarning.visible = false
+//                    iconseatbeltWarning.visible = false
                     seatbeltWarningTimer.running = false
-                    iconseatbeltWarning.opacity = 1.0
+                    iconseatbeltWarning.opacity = 0.3
                 }
                 else if (sig === 0x01) { // 0x03 => seatbelt chưa được đóng
-                    iconseatbeltWarning.visible = true
+//                    iconseatbeltWarning.visible = true
                     seatbeltWarningTimer.running = true
                 }
             }
@@ -884,7 +785,7 @@ Item {
             repeat: true
             running: false
             onTriggered: {
-                iconseatbeltWarning.opacity = iconseatbeltWarning.opacity > 0 ? 0 : 1
+                iconseatbeltWarning.opacity = iconseatbeltWarning.opacity < 1 ? 1 : 0.3
             }
         }
 
@@ -896,7 +797,8 @@ Item {
             fillMode: Image.PreserveAspectFit
             width: parent.width * 0.8
             height: parent.height * 0.8
-            visible: false   // mặc định tắt
+//            visible: false   // mặc định tắt
+            opacity:0.3
         }
 
         // màu nền cho dễ debug
@@ -925,7 +827,8 @@ Item {
             fillMode: Image.PreserveAspectFit
             width: parent.width * 0.8
             height: parent.height * 0.8
-            visible: false
+//            visible: false
+            opacity:0.3
         }
     }
 
@@ -956,6 +859,201 @@ Item {
         // Để dễ debug, bạn có thể bật màu nền nhẹ
 //        Rectangle { anchors.fill: parent; color: "#40ffffff" }
     }
+
+    // ô vuông chọn biểu tượng sưởi ấm vô lăng
+    Item {
+        id: selectSteeringwheelwarmer
+        property real baseX: 362
+        property real baseY: 291
+        property real baseWidth: 85
+        property real baseHeight: 86
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        Rectangle {
+            id: selectSteeringwheelwarmerRectangle
+            anchors.fill: parent;
+            color: "#40ffffff"
+            opacity: 0.0 // mặc định ban đầu không hiển thị (không chọn gì cả)
+//            Giá trị	|   Ý nghĩa
+//            opacity: 1.0	Hoàn toàn không trong suốt (hiển thị bình thường)
+//            opacity: 0.5	Trong suốt 50%
+//            opacity: 0.0	Trong suốt hoàn toàn, không nhìn thấy (nhưng item vẫn chiếm diện tích và vẫn nhận sự kiện chuột nếu visible: true)
+            radius: 10
+
+            border.width: 2          // độ dày đường viền
+            border.color: "grey"    // màu đường viền
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                selectSteeringwheelwarmerRectangle.opacity = 0.5 - selectSteeringwheelwarmerRectangle.opacity
+
+            }
+        }
+    }
+    // ô vuông chọn biểu tượng sưởi ấm kính trước
+    Item {
+        id: selectFrontDefrosh
+        property real baseX: 448
+        property real baseY: 291
+        property real baseWidth: 85
+        property real baseHeight: 86
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        Rectangle {
+            id: selectFrontDefroshRectangle
+            anchors.fill: parent;
+            color: "#40ffffff"
+            opacity: 0.0 // mặc định ban đầu không hiển thị (không chọn gì cả)
+//            Giá trị	|   Ý nghĩa
+//            opacity: 1.0	Hoàn toàn không trong suốt (hiển thị bình thường)
+//            opacity: 0.5	Trong suốt 50%
+//            opacity: 0.0	Trong suốt hoàn toàn, không nhìn thấy (nhưng item vẫn chiếm diện tích và vẫn nhận sự kiện chuột nếu visible: true)
+            radius: 10
+
+            border.width: 2          // độ dày đường viền
+            border.color: "grey"    // màu đường viền
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                selectFrontDefroshRectangle.opacity = 0.5 - selectFrontDefroshRectangle.opacity
+            }
+        }
+    }
+    // ô vuông chọn biểu tượng sưởi ấm kính rear
+    Item {
+        id: selectRearDefrosh
+        property real baseX: 534
+        property real baseY: 291
+        property real baseWidth: 85
+        property real baseHeight: 86
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        Rectangle {
+            id: selectRearDefroshRectangle
+            anchors.fill: parent;
+            color: "#40ffffff"
+            opacity: 0.0 // mặc định ban đầu không hiển thị (không chọn gì cả)
+//            Giá trị	|   Ý nghĩa
+//            opacity: 1.0	Hoàn toàn không trong suốt (hiển thị bình thường)
+//            opacity: 0.5	Trong suốt 50%
+//            opacity: 0.0	Trong suốt hoàn toàn, không nhìn thấy (nhưng item vẫn chiếm diện tích và vẫn nhận sự kiện chuột nếu visible: true)
+            radius: 10
+
+            border.width: 2          // độ dày đường viền
+            border.color: "grey"    // màu đường viền
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                selectRearDefroshRectangle.opacity = 0.5 - selectRearDefroshRectangle.opacity
+            }
+        }
+    }
+
+    // ô vuông chọn biểu tượng sưởi ấm ghế lái
+    Item {
+        id: selectSeatWarmer
+        property real baseX: 620
+        property real baseY: 291
+        property real baseWidth: 85
+        property real baseHeight: 86
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        Rectangle {
+            id: selectSeatWarmerRectangle
+            anchors.fill: parent;
+            color: "#40ffffff"
+            opacity: 0.0 // mặc định ban đầu không hiển thị (không chọn gì cả)
+//            Giá trị	|   Ý nghĩa
+//            opacity: 1.0	Hoàn toàn không trong suốt (hiển thị bình thường)
+//            opacity: 0.5	Trong suốt 50%
+//            opacity: 0.0	Trong suốt hoàn toàn, không nhìn thấy (nhưng item vẫn chiếm diện tích và vẫn nhận sự kiện chuột nếu visible: true)
+            radius: 10
+
+            border.width: 2          // độ dày đường viền
+            border.color: "grey"    // màu đường viền
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                selectSeatWarmerRectangle.opacity = 0.5 - selectSeatWarmerRectangle.opacity
+            }
+        }
+    }
+
+    // ô vuông chọn biểu tượng sưởi ấm Wiper
+    Item {
+        id: selectWiper
+        property real baseX: 706
+        property real baseY: 291
+        property real baseWidth: 85
+        property real baseHeight: 86
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        Rectangle {
+            id: selectWiperRectangle
+            anchors.fill: parent;
+            color: "#40ffffff"
+            opacity: 0.0 // mặc định ban đầu không hiển thị (không chọn gì cả)
+//            Giá trị	|   Ý nghĩa
+//            opacity: 1.0	Hoàn toàn không trong suốt (hiển thị bình thường)
+//            opacity: 0.5	Trong suốt 50%
+//            opacity: 0.0	Trong suốt hoàn toàn, không nhìn thấy (nhưng item vẫn chiếm diện tích và vẫn nhận sự kiện chuột nếu visible: true)
+            radius: 10
+
+            border.width: 2          // độ dày đường viền
+            border.color: "grey"    // màu đường viền
+        }
+
+        // MouseArea để bắt sự kiện nhấn
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                // thực hiện hành động bạn muốn
+                selectWiperRectangle.opacity = 0.5 - selectWiperRectangle.opacity
+            }
+        }
+    }
+
 
 
 }
