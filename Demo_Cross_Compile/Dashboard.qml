@@ -487,9 +487,9 @@ Item {
         id: playMusic
         property alias iconSource: iconPlayMusic.source   // cho phép set icon từ ngoài
         property real baseX: 565
-        property real baseY: 442
-        property real baseWidth: 23
-        property real baseHeight: 31
+        property real baseY: 432
+        property real baseWidth: 33
+        property real baseHeight: 41
         property bool active: false   // trạng thái icon
 
         x: baseX * (background.width / background.sourceSize.width)
@@ -527,9 +527,9 @@ Item {
         id: nextMusic
         property alias iconSource: iconNextMusic.source   // cho phép set icon từ ngoài
         property real baseX: 631
-        property real baseY: 441
-        property real baseWidth: 23
-        property real baseHeight: 31
+        property real baseY: 432
+        property real baseWidth: 43
+        property real baseHeight: 51
 
         x: baseX * (background.width / background.sourceSize.width)
         y: baseY * (background.height / background.sourceSize.height)
@@ -564,9 +564,9 @@ Item {
         id: previousMusic
         property alias iconSource: iconPreviousMusic.source   // cho phép set icon từ ngoài
         property real baseX: 486
-        property real baseY: 441
-        property real baseWidth: 23
-        property real baseHeight: 31
+        property real baseY: 432
+        property real baseWidth: 43
+        property real baseHeight: 51
 
         x: baseX * (background.width / background.sourceSize.width)
         y: baseY * (background.height / background.sourceSize.height)
