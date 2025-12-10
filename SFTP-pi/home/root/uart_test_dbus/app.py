@@ -42,28 +42,28 @@ class VehicleService(dbus.service.Object):
         self.DataUpdated(value)
 
 
-    # service gửi dữ liệu từ máy tính xuống vi điều khiển qua UART
-    @dbus.service.method(IFACE, in_signature="s", out_signature="b")
-    def SendUART(self, message):
-        """
-        Gửi 1 chuỗi qua UART
-        """
+    # # service gửi dữ liệu từ máy tính xuống vi điều khiển qua UART
+    # @dbus.service.method(IFACE, in_signature="s", out_signature="b")
+    # def SendUART(self, message):
+    #     """
+    #     Gửi 1 chuỗi qua UART
+    #     """
 
-        print("Start Print UART")
-        try:
-            if isinstance(message, str):
-                message_bytes = message.encode('utf-8')
-            else:
-                message_bytes = bytes(message)
+    #     print("Start Print UART")
+    #     try:
+    #         if isinstance(message, str):
+    #             message_bytes = message.encode('utf-8')
+    #         else:
+    #             message_bytes = bytes(message)
 
-            ser.write(message_bytes)
-            ser.flush()
-            print("UART TX:", message_bytes)
-            return True
+    #         ser.write(message_bytes)
+    #         ser.flush()
+    #         print("UART TX:", message_bytes)
+    #         return True
 
-        except Exception as e:
-            print("UART TX Error:", e)
-            return False
+    #     except Exception as e:
+    #         print("UART TX Error:", e)
+    #         return False
 
 
 
@@ -72,8 +72,8 @@ class VehicleService(dbus.service.Object):
 # ----------------------------
 
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-# bus = dbus.SessionBus()
-bus = dbus.SystemBus()
+bus = dbus.SessionBus()
+# bus = dbus.SystemBus()
 name = dbus.service.BusName(BUS_NAME, bus)
 
 vehicle = VehicleService(bus)
@@ -84,10 +84,10 @@ buffer = bytearray()
 
 print("Reading UART...")
 
-message_test = "Ducanhdeptrainhatthegioi"
-message_bytes = message_test.encode('utf-8')
-ser.write(message_bytes)
-ser.flush()
+# message_test = "Ducanhdeptrainhatthegioi"
+# message_bytes = message_test.encode('utf-8')
+# ser.write(message_bytes)
+# ser.flush()
 
 while True:
     byte = ser.read(1)
@@ -96,7 +96,7 @@ while True:
 
     buffer += byte
 
-    time.sleep (2)
+    # time.sleep (2)
 
     if buffer.endswith(b"###\n"):
         

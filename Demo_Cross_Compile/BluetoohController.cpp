@@ -3,19 +3,60 @@
 #include <QDBusConnection>
 #include <QDebug>
 
-bluetoothcontroller::bluetoothcontroller(QObject* parent) : QObject(parent)
-{
-    bool ok = QDBusConnection::sessionBus().connect(
-        "org.example.Vehicle",       // service
-        "/org/example/Vehicle",      // object path
-        "org.example.Vehicle",       // interface
-        "DataUpdated"               // signal
-    );
+#include <QMap>
+#include <QDBusMetaType>
+#include <QtDBus/QDBusMetaType>
+typedef QMap<QString, QString> ConnectionDetails;
+Q_DECLARE_METATYPE(ConnectionDetails)
 
-    if (ok == false)
-    {
-        qDebug() << "No connect to D-Bus Bluetooth service";
+bluetoothcontroller::bluetoothcontroller(QObject* parent) : QObject(parent),
+                        m_BleAudioInterface ("com.example.BluetoothAudio", 
+                            "/com/example/BluetoothAudio", 
+                            "com.example.BluetoothAudio" , 
+                            QDBusConnection::sessionBus()
+                        )
+{
+    // // Lấy meta data từ Bluetooth Service custom
+    // QDBusReply<QString> reply = m_BleAudioInterface.call("GetMetadata");
+    // if(reply.isValid()) {
+    //     qDebug () << reply.value() << "\n";
+    // } else {
+    //     qWarning() << "Failed to get song list:" << reply.error().message();
+    // }
+
+    // QDBusInterface m_BleAudioInterface(
+    //     "com.example.BluetoothAudio",
+    //     "/com/example/BluetoothAudio",
+    //     "com.example.BluetoothAudio",
+    //     QDBusConnection::sessionBus()
+    // );
+    // ✅ BẮT BUỘC để dùng a{ss}
+    qDBusRegisterMetaType<QMap<QString, QString>>();
+
+    if (!m_BleAudioInterface.isValid()) {
+        qDebug() << "DBus interface invalid!";
+        return;
     }
+
+    // ✅ a{ss}  →  QMap<QString, QString>
+    QDBusReply<QMap<QString, QString>> reply =
+            m_BleAudioInterface.call("GetMetadata");
+
+    if (!reply.isValid()) {
+        qDebug() << "DBus Error:" << reply.error().message();
+        return;
+    }
+
+    QMap<QString, QString> metadata = reply.value();
+
+    qDebug() << "Title :"  << metadata.value("Title");
+    qDebug() << "Artist:"  << metadata.value("Artist");
+    qDebug() << "Album :"  << metadata.value("Album");
+
+    // Debug toàn bộ map
+    qDebug() << "Full metadata:" << metadata;
+
+    current_audio = metadata.value("Title") + "-" + metadata.value("Artist");
 }
 
 void bluetoothcontroller::TurnOnBlue()
@@ -30,33 +71,68 @@ void bluetoothcontroller::TurnOffBlue()
 
 void bluetoothcontroller::PlayAudio ()
 {
-
+    m_BleAudioInterface.call("Play");
 } // play audio đang dạy
 void bluetoothcontroller::PauseAudio()
 {
-
+    m_BleAudioInterface.call("Pause");
 } // tạm dừng audio đang chạy
+
+void bluetoothcontroller::TogglePlayPause()
+{
+    m_BleAudioInterface.call("PlayPause");
+}
 void bluetoothcontroller::NextTrack()
 {
-
+    m_BleAudioInterface.call("Next");
+    GetMetadata();
 } // chuyển trang audio kế tiếp
 void bluetoothcontroller::PreviousTrack()
 {
-
+    m_BleAudioInterface.call("Previous");
+    GetMetadata();
 } // chuyển lại audio trước đó
 void bluetoothcontroller::SetVolume (double volume)
 {
-
+    m_BleAudioInterface.call("SetVolume", volume);
 } // set volume ở mức mong muốn (0.0-> 10.0)
 double bluetoothcontroller::GetCurrentVolume ()
 {
+    
     return 0.0;
 } // lấy mức volume hiện tại
+
 
 QString bluetoothcontroller::GetMetadata()
 {
     QString bufferRet;
+    if (!m_BleAudioInterface.isValid()) {
+        qDebug() << "DBus interface invalid!";
+        return "";
+    }
 
-    emit GetMetadataDone ();
+    // ✅ a{ss}  →  QMap<QString, QString>
+    QDBusReply<QMap<QString, QString>> reply =
+            m_BleAudioInterface.call("GetMetadata");
+
+    if (!reply.isValid()) {
+        qDebug() << "DBus Error:" << reply.error().message();
+        return "";
+    }
+
+    QMap<QString, QString> metadata = reply.value();
+
+    qDebug() << "Title :"  << metadata.value("Title");
+    qDebug() << "Artist:"  << metadata.value("Artist");
+    qDebug() << "Album :"  << metadata.value("Album");
+
+    // Debug toàn bộ map
+    qDebug() << "Full metadata:" << metadata;
+
+    bufferRet = metadata.value("Title") + "-" + metadata.value("Artist");
+    qDebug() << "Full bufferRet:" << bufferRet;
+
+    current_audio = bufferRet;
+    emit GetMetadataDone();
     return bufferRet;
 }

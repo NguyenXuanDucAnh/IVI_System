@@ -117,6 +117,35 @@ Item {
             verticalAlignment: Text.AlignVCenter
         }
     }
+    // label thời gian
+    Item {
+        id: timeItem
+        // toạ độ gốc trong ảnh thật
+        property real baseX: 931
+        property real baseY: 6
+        property real baseWidth: 83      // bạn có thể chỉnh kích thước vùng hiển thị
+        property real baseHeight: 38
+
+        // Tỉ lệ co giãn theo kích thước ảnh nền
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Để dễ debug, bạn có thể bật màu nền nhẹ
+//         Rectangle { anchors.fill: parent; color: "#40ffffff" }
+
+        Text {
+            id: label_time
+            anchors.centerIn: parent        // ✅ canh giữa trong Item
+            font.family: lato_regular_font.name
+            font.pixelSize: 32 * (background.width / background.sourceSize.width)
+            color: "white"
+            text: "15:30"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
     // -- thêm icon Home app => đưa về màn hình dashboard
     Item {
         id: homeApp
@@ -188,6 +217,30 @@ Item {
         }
     }
     // -- thêm icon bluetooth app
+    Image {
+        id: bleEnableIcon
+        property alias iconSource: iconBluetoothApp.source   // cho phép set icon từ ngoài
+        property real baseX: 888
+        property real baseY: 3
+        property real baseWidth: 45
+        property real baseHeight: 45
+
+        x: baseX * (background.width / background.sourceSize.width)
+        y: baseY * (background.height / background.sourceSize.height)
+        width: baseWidth * (background.width / background.sourceSize.width)
+        height: baseHeight * (background.height / background.sourceSize.height)
+
+        // Icon
+        Image {
+            id: bleEnableIconImage
+            anchors.centerIn: parent
+            source: "assert/bleEnableIcon.png"  // thay bằng đường dẫn icon của bạn
+            fillMode: Image.PreserveAspectFit
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+            opacity: 1.0 // mặc định là tắt bluetooth nên không hiển thị lên màn hình
+        }
+    }
     Item {
         id: bluetoothApp
         property alias iconSource: iconBluetoothApp.source   // cho phép set icon từ ngoài
@@ -218,6 +271,7 @@ Item {
             onClicked: {
                 console.log("Icon button clicked!")
                 // thực hiện hành động bạn muốn
+                bleEnableIcon.opacity = 1.0 - bleEnableIcon.opacity
             }
         }
     }
@@ -421,7 +475,8 @@ Item {
             font.family: lato_regular_font.name
             font.pixelSize: 16 * (background.width / background.sourceSize.width)
             color: "white"
-            text: mp3Ctrl.currentSong // lấy tên bài hát hiện tại
+//            text: mp3Ctrl.currentSong // lấy tên bài hát hiện tại
+            text: bleCtrl.currentAudio
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -460,8 +515,9 @@ Item {
             cursorShape: Qt.PointingHandCursor
             onClicked: {
                 // thực hiện hành động bạn muốn
-                mp3Ctrl.playPause()
+                // mp3Ctrl.playPause()
                 playMusic.active = !playMusic.active
+                bleCtrl.TogglePlayPause()
             }
         }
     }
@@ -496,7 +552,8 @@ Item {
             cursorShape: Qt.PointingHandCursor
             onClicked: {
                 // thực hiện hành động bạn muốn
-                mp3Ctrl.next()
+                // mp3Ctrl.next()
+                bleCtrl.NextTrack()
             }
         }
     }
@@ -532,7 +589,8 @@ Item {
             cursorShape: Qt.PointingHandCursor
             onClicked: {
                 // thực hiện hành động bạn muốn
-                mp3Ctrl.previous()
+                // mp3Ctrl.previous()
+                bleCtrl.PreviousTrack()
             }
         }
     }
@@ -553,7 +611,8 @@ Item {
         from: 0
         value: 10.0
         to: 10
-        onValueChanged: mp3Ctrl.setVolume(value)
+        // onValueChanged: mp3Ctrl.setVolume(value)
+        onValueChanged: bleCtrl.SetVolume(value)
 
     }
 

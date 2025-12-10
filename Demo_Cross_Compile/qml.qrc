@@ -28,5 +28,6 @@
         <file>assert/Dash_board/Shift Left Icon.png</file>
         <file>assert/Dash_board/Shift Right Icon.png</file>
         <file>assert/Dash_board/Map Demo.png</file>
+        <file>assert/bleEnableIcon.png</file>
     </qresource>
 </RCC>

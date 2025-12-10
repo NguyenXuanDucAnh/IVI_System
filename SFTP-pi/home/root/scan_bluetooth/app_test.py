@@ -497,6 +497,14 @@ def turn_off_bluetooth(sig, frame):
 
 
 def main():
+    # không chạy lệnh này thì nó bị lock rf kill
+    try:
+        print ("Run rf kill")
+        subprocess.run(["rfkill", "unblock", "bluetooth"], check=True)
+    except:
+        print ("except when run rfkill")
+
+
     print("=" * 60)
     print("Bluetooth Audio D-Bus Service")
     print(f"Service: {DBUS_SERVICE_NAME}")

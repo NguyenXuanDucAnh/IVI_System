@@ -11,6 +11,8 @@
 #include "arccontroller.h"
 #include "VehicleListener.h"
 #include "Mp3Controller.h"
+#include "BluetoothController.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -21,9 +23,12 @@ int main(int argc, char *argv[])
     // khai báo các object
     Temperature_Info uartProvider;
     Mp3Controller mp3Ctrl;
+    bluetoothcontroller bleCtrl;
+    // bleCtrl.GetMetadata();
 
     engine.rootContext()->setContextProperty("mp3Ctrl", &mp3Ctrl);
     engine.rootContext()->setContextProperty("uartProvider", &uartProvider);
+    engine.rootContext()->setContextProperty("bleCtrl", &bleCtrl);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl) {
