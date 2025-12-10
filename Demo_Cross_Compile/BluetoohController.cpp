@@ -6,6 +6,10 @@
 #include <QMap>
 #include <QDBusMetaType>
 #include <QtDBus/QDBusMetaType>
+#include <QString>
+
+#define MAX_LEGHT_NAME_TRACK 50
+
 typedef QMap<QString, QString> ConnectionDetails;
 Q_DECLARE_METATYPE(ConnectionDetails)
 
@@ -56,7 +60,22 @@ bluetoothcontroller::bluetoothcontroller(QObject* parent) : QObject(parent),
     // Debug toàn bộ map
     qDebug() << "Full metadata:" << metadata;
 
-    current_audio = metadata.value("Title") + "-" + metadata.value("Artist");
+    // current_audio = metadata.value("Title") + "-" + metadata.value("Artist");
+
+    UpdateCurrentAudioName (metadata);
+
+    
+}
+
+void bluetoothcontroller::UpdateCurrentAudioName (QMap<QString, QString> metadata)
+{
+    QString fullText = metadata.value("Title") + "-" + metadata.value("Artist");
+
+    if (fullText.length() > MAX_LEGHT_NAME_TRACK) {
+        current_audio = fullText.left(MAX_LEGHT_NAME_TRACK) + "...";  // "Example..."
+    } else {
+        current_audio = fullText;
+    }
 }
 
 void bluetoothcontroller::TurnOnBlue()
@@ -132,7 +151,7 @@ QString bluetoothcontroller::GetMetadata()
     bufferRet = metadata.value("Title") + "-" + metadata.value("Artist");
     qDebug() << "Full bufferRet:" << bufferRet;
 
-    current_audio = bufferRet;
+    UpdateCurrentAudioName (metadata);
     emit GetMetadataDone();
     return bufferRet;
 }

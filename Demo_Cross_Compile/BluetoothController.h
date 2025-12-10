@@ -20,6 +20,7 @@ private:
 public:
     explicit bluetoothcontroller(QObject* parent = nullptr);
     QString currentAudio() const { return current_audio; };
+    void UpdateCurrentAudioName (QMap<QString, QString> metadata);
 
 signals:
     void GetMetadataDone ();
