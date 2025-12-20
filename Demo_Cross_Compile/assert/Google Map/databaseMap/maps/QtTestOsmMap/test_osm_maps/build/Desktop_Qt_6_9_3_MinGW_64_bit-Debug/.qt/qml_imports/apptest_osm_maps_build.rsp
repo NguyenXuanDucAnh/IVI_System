@@ -1,0 +1,14 @@
+-rootPath
+C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps
+-cmake-output
+-output-file
+C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/.qt/qml_imports/apptest_osm_maps_build.cmake
+-importPath
+C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/test_osm_maps
+-importPath
+C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug
+-importPath
+C:/Qt/6.9.3/mingw_64/qml
+-qrcFiles
+C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/.qt/rcc/qmake_test_osm_maps.qrc
+C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug/.qt/rcc/apptest_osm_maps_raw_qml_0.qrc

@@ -1,0 +1,6 @@
+module test_osm_maps
+typeinfo apptest_osm_maps.qmltypes
+prefer :/qt/qml/test_osm_maps/
+Main 1.0 Main.qml
+depends QtQuick
+

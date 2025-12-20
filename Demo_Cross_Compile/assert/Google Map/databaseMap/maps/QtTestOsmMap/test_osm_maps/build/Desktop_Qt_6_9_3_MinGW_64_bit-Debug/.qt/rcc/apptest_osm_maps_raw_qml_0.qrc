@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/test_osm_maps/">
+    <file alias="Main.qml">C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/Main.qml</file>
+  </qresource>
+</RCC>
+

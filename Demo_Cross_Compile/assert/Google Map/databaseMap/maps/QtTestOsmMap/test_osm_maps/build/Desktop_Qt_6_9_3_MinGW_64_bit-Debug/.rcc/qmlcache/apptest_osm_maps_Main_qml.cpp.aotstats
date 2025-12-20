@@ -1,0 +1,68 @@
+[
+    {
+        "moduleFiles": [
+            {
+                "entries": [
+                    {
+                        "codegenSuccessful": true,
+                        "column": 17,
+                        "durationMicroseconds": 363,
+                        "errorMessage": "",
+                        "functionName": "plugin",
+                        "line": 45
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 20,
+                        "durationMicroseconds": 84,
+                        "errorMessage": "Cannot access value for name testZoom",
+                        "functionName": "zoomLevel",
+                        "line": 46
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 17,
+                        "durationMicroseconds": 145,
+                        "errorMessage": "Cannot access value for name testLat",
+                        "functionName": "center",
+                        "line": 48
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 23,
+                        "durationMicroseconds": 96,
+                        "errorMessage": "",
+                        "functionName": "fill",
+                        "line": 44
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 25,
+                        "durationMicroseconds": 60,
+                        "errorMessage": "Cannot access value for name testLat",
+                        "functionName": "coordinate",
+                        "line": 54
+                    },
+                    {
+                        "codegenSuccessful": true,
+                        "column": 23,
+                        "durationMicroseconds": 47,
+                        "errorMessage": "",
+                        "functionName": "fill",
+                        "line": 69
+                    },
+                    {
+                        "codegenSuccessful": false,
+                        "column": 25,
+                        "durationMicroseconds": 227,
+                        "errorMessage": "Cannot access value for name event",
+                        "functionName": "onPressed",
+                        "line": 71
+                    }
+                ],
+                "filePath": "C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/Main.qml"
+            }
+        ],
+        "moduleId": "test_osm_maps(apptest_osm_maps)"
+    }
+]

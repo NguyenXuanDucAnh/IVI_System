@@ -1,0 +1,26 @@
+
+.shopacado-hidden {
+    position: absolute!important;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    word-wrap: normal!important;
+}
+
+.shopacado-discount-table-block {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.shopacado-cart-item-success-notes,
+.shopacado-cart-item-upsell-notes
+{
+    display: block;
+    font-weight: bold;
+    color: #0078BD;
+    font-size: 85%;
+}

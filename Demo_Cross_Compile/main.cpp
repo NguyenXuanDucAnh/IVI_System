@@ -12,6 +12,7 @@
 #include "VehicleListener.h"
 #include "Mp3Controller.h"
 #include "BluetoothController.h"
+#include "GetPosition.h"
 
 
 int main(int argc, char *argv[])
@@ -24,11 +25,16 @@ int main(int argc, char *argv[])
     Temperature_Info uartProvider;
     Mp3Controller mp3Ctrl;
     bluetoothcontroller bleCtrl;
+
+    GetPositon getPostion;
+    getPostion.init();
+    
     // bleCtrl.GetMetadata();
 
     engine.rootContext()->setContextProperty("mp3Ctrl", &mp3Ctrl);
     engine.rootContext()->setContextProperty("uartProvider", &uartProvider);
     engine.rootContext()->setContextProperty("bleCtrl", &bleCtrl);
+    engine.rootContext()->setContextProperty("getPostion", &getPostion);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl) {

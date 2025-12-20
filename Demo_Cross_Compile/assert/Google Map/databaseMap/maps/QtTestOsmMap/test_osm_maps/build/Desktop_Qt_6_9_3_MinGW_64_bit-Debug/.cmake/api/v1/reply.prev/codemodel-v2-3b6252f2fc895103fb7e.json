@@ -1,0 +1,196 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-32e95d3e312c17e80dd5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "test_osm_maps",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "all_aotstats::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_aotstats-Debug-5abacf3787dcde4d019a.json",
+					"name" : "all_aotstats",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint-Debug-57cba00bdc8aa91980e2.json",
+					"name" : "all_qmllint",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint_json::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint_json-Debug-afbe05d06c8a4d445baf.json",
+					"name" : "all_qmllint_json",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint_module::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint_module-Debug-084e2aeb7c6da5a201e9.json",
+					"name" : "all_qmllint_module",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmltyperegistrations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmltyperegistrations-Debug-314d0a8b8d07f1273b95.json",
+					"name" : "all_qmltyperegistrations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps-Debug-f598bba7731936d60c88.json",
+					"name" : "apptest_osm_maps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_autogen-Debug-107dc148a87081f1be79.json",
+					"name" : "apptest_osm_maps_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_autogen_timestamp_deps-Debug-907caf5b783f3e02844f.json",
+					"name" : "apptest_osm_maps_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_copy_qml::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_copy_qml-Debug-20f116e8d24824674e07.json",
+					"name" : "apptest_osm_maps_copy_qml",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_copy_res::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_copy_res-Debug-5b91b763746e335f87f6.json",
+					"name" : "apptest_osm_maps_copy_res",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_qmlimportscan::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_qmlimportscan-Debug-1c4330efdf33590b5edf.json",
+					"name" : "apptest_osm_maps_qmlimportscan",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_qmllint::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_qmllint-Debug-e5d7094a219290595e82.json",
+					"name" : "apptest_osm_maps_qmllint",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_qmllint_json::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_qmllint_json-Debug-df0e509d87208f84718f.json",
+					"name" : "apptest_osm_maps_qmllint_json",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_qmllint_module::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_qmllint_module-Debug-c0578c075973e4ef122d.json",
+					"name" : "apptest_osm_maps_qmllint_module",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "apptest_osm_maps_qmltyperegistration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-apptest_osm_maps_qmltyperegistration-Debug-052ccaff73f5c7d5d45c.json",
+					"name" : "apptest_osm_maps_qmltyperegistration",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "module_apptest_osm_maps_aotstats_target::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-module_apptest_osm_maps_aotstats_target-Debug-afbdee20ae6a9fb8afca.json",
+					"name" : "module_apptest_osm_maps_aotstats_target",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps/build/Desktop_Qt_6_9_3_MinGW_64_bit-Debug",
+		"source" : "C:/Users/anhng/OneDrive/Desktop/QtTestOsmMap/test_osm_maps"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

@@ -3,6 +3,9 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 
 
+import QtLocation 5.15
+import QtPositioning 5.15
+
 Item {
     visible: true
     width: 1024
@@ -684,7 +687,7 @@ Item {
             }
         }
     }
-
+    
     // Thêm icon rẽ xinhan trái
     Item {
         id: turnleftArrow
@@ -891,32 +894,137 @@ Item {
         }
     }
 
-    // thêm minimap demo (sẽ phát triển dữ liệu thật sau)
+    // thêm minimap
+    // -- thêm block google map pannel
     Item {
-        id: miniMap
-        property alias iconSource: iconminiMap.source   // cho phép set icon từ ngoài
-        property real baseX: 365
-        property real baseY: 71
-        property real baseWidth: 428
-        property real baseHeight: 200
+        Item {
+            id: mapWindows
+    //       property real baseX: 361
+    //       property real baseY: 75
+    //       property real baseWidth: 638
+    //       property real baseHeight: 391
+            property real baseX: 690
+            property real baseY: 130
+            property real baseWidth: 800
+            property real baseHeight: 350
 
-        x: baseX * (background.width / background.sourceSize.width)
-        y: baseY * (background.height / background.sourceSize.height)
-        width: baseWidth * (background.width / background.sourceSize.width)
-        height: baseHeight * (background.height / background.sourceSize.height)
+            x: baseX
+            y: baseY
+            width: baseWidth
+            height: baseHeight
+            // Cập nhật vị trí lat/lon liên tục
+            Plugin {
+                id: mapPlugin
+                name: "osm"
+                PluginParameter {
+                    name: "osm.mapping.cache.directory"
+                    value: "/home/root/.cache/qtlocation/osm"
+                }
+            }
 
-        // Icon
-        Image {
-            id: iconminiMap
-            anchors.centerIn: parent
-            source: "/assert/Dash_board/Map Demo.png"  // thay bằng đường dẫn icon của bạn
-            fillMode: Image.PreserveAspectFit
-            width: parent.width
-            height: parent.height
+            Rectangle { anchors.fill: parent; color: "#40ffffff" }
+
+            // Container cho Map để dễ chỉnh kích thước
+            Rectangle {
+                id: mapContainer
+                anchors.fill: parent
+                anchors.margins: 0
+                x: mapWindows.baseX
+                y: mapWindows.baseY
+                width: mapWindows.baseWidth
+                height: mapWindows.baseHeight
+
+                color: "transparent"
+    //            border.color: "#333333"
+                border.color: "red"
+                border.width: 2
+                radius: 10  // Bo góc
+
+                Map {
+                    id: mapAtlast
+                    anchors.fill: parent
+                    anchors.margins: 5  // Margin để không bị border che
+                    plugin: mapPlugin
+                    zoomLevel: 16
+                    center: QtPositioning.coordinate(getPostion.currentLat, getPostion.currentLon)
+
+
+                    // Draw tracker
+                    MapQuickItem {
+                        coordinate: QtPositioning.coordinate(getPostion.currentLat, getPostion.currentLon)
+                        anchorPoint.x: 12
+                        anchorPoint.y: 12
+                        sourceItem: Rectangle {
+                            width: 24
+                            height: 24
+                            radius: 12
+                            color: "red"
+                            border.color: "white"
+                            border.width: 2
+
+                            // Animation khi di chuyển
+                            Behavior on x {
+                                NumberAnimation { duration: 1000; easing.type: Easing.InOutQuad }
+                            }
+                            Behavior on y {
+                                NumberAnimation { duration: 1000; easing.type: Easing.InOutQuad }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
-        // Để dễ debug, bạn có thể bật màu nền nhẹ
-//        Rectangle { anchors.fill: parent; color: "#40ffffff" }
+        // thêm nút về giữa của google map
+        Item {
+            id: centerMapButton
+            property alias iconSource: iconCenterMapButton.source   // cho phép set icon từ ngoài
+            property real baseX: 371
+            property real baseY: 225
+            property real baseWidth:  64.5
+            property real baseHeight:  31.5
+
+            x: baseX * (background.width / background.sourceSize.width)
+            y: baseY * (background.height / background.sourceSize.height)
+            width: baseWidth * (background.width / background.sourceSize.width)
+            height: baseHeight * (background.height / background.sourceSize.height)
+
+            // vẽ viền
+            Rectangle {
+                anchors.fill: parent
+//                color: "black"
+                border.color: "black"
+                border.width: 2
+                radius: 6
+            }
+
+            // Icon
+            Image {
+                id: iconCenterMapButton
+                anchors.centerIn: parent
+                source: "assert/Google Map/MapCenterButton.png"  // thay bằng đường dẫn icon của bạn
+                fillMode: Image.PreserveAspectFit
+                width: parent.width
+                height: parent.height
+            }
+
+            // MouseArea để bắt sự kiện nhấn
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    console.log("Icon button clicked!")
+                    // thực hiện hành động bạn muốn
+                    if (mapAtlast.zoomLevel === 20) {
+                        mapAtlast.zoomLevel = 16
+                    } else {
+                        mapAtlast.zoomLevel = 20
+                    }
+                }
+            }
+
+        }
     }
 
     // ô vuông chọn biểu tượng sưởi ấm vô lăng

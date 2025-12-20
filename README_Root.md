@@ -174,3 +174,8 @@ $ ssh-keygen -f "/home/admin1/.ssh/known_hosts" -R "192.168.1.247"
 
 ```
 + Sau khi chạy xong, tiến hành SSH lại vào target!
+
+---
+
+# Tutorial kết nối vk-162 (USB to GPS) trong linux để lấy tọa độ
+https://gpswebshop.com/blogs/tech-support-by-os-linux/how-to-connect-an-usb-gps-receiver-with-a-linux-computer?srsltid=AfmBOoprHxtlb43vtjcSHOaqg26XgxfdobeUSxCVXFmaXMyrI-_TzDhN
